@@ -14,7 +14,8 @@
     <!-- ============================ COMPONENT 1 ================================= -->
     <div class="card">
         <div class="row no-gutters">
-            <aside class="col-md-6">
+          <aside class="col-md-6">
+
     <article class="gallery-wrap"> 
         <div class="img-big-wrap">
            <a href="#"><img src="{{ single_product.image.url }}"></a>
@@ -23,6 +24,10 @@
     </article> <!-- gallery-wrap .end// -->
             </aside>
             <main class="col-md-6 border-left">
+    
+    
+    <form action="{% url 'add_cart' single_product.id %}" method="POST">
+        {% csrf_token %}
     <article class="content-body">
     
     <h2 class="title">{{ single_product.product_name}}</h2>
@@ -38,52 +43,41 @@
         <div class="row">
             <div class="item-option-select">
                 <h6>Choose Color</h6>
-                <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-light">
-                    <input type="radio" name="radio_color"> Silver
-                  </label>
-                  <label class="btn btn-light">
-                    <input type="radio" name="radio_color" > Gray
-                  </label>
-                  <label class="btn btn-light active">
-                    <input type="radio" name="radio_color checked"> Gold
-                  </label>
-                  <label class="btn btn-light">
-                    <input type="radio" name="radio_color"> Black
-                  </label>
-                </div> 
+                <select name="color" class="form-control">
+                  <option value="" disabled selected>Select</option>
+				{% for i in single_product.variation_set.colors %}
+				<option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+				{% endfor %}
+                </select>
             </div>
         </div> <!-- row.// -->
         <div class="row">
             <div class="item-option-select">
                 <h6>Select Size</h6>
-                <div class="btn-group btn-group-sm btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-light">
-                    <input type="radio" name="radio_color"> S
-                  </label>
-                  <label class="btn btn-light active">
-                    <input type="radio" name="radio_color" checked> M
-                  </label>
-                  <label class="btn btn-light">
-                    <input type="radio" name="radio_color"> L
-                  </label>
-                  <label class="btn btn-light">
-                    <input type="radio" name="radio_color"> XL
-                  </label>
-                </div> 
+                <select name="color" class="form-control">
+                    <option value="" disabled selected>Select</option>
+                  {% for i in single_product.variation_set.sizes %}
+				<option value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+				{% endfor %}
+                </select>
             </div>
         </div> <!-- row.// -->
         <hr>
         {% if single_product.stock <= 0 %}
-        <button class="btn btn-primary disabled"> 
+        <a class="btn btn-primary disabled"> 
           <span class="text">Out Of Stock</span>
-        </button>
-        {% else %}
-        <a href="./product-detail.html" class="btn  btn-primary">
-        <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  
         </a>
+        {% else %}
+        {% if in_cart %}
+        <a href="{% url 'cart' %}" class="btn btn-primary"><i class="fas fa-eye"></i> View Cart</a>
+        {% else %}
+        <button class="btn btn-primary" type="submit">
+        <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i></button>
         {% endif %}
-    </article> <!-- product-info-aside .// -->
+        {% endif %}
+    </article>
+    </form>
+    <!-- product-info-aside .// -->
             </main> <!-- col.// -->
         </div> <!-- row.// -->
     </div> <!-- card.// -->
@@ -101,7 +95,7 @@
     
         <article class="box mb-3">
             <div class="icontext w-100">
-                <img src="./images/avatars/avatar1.jpg" class="img-xs icon rounded-circle">
+                <img src="#" class="img-xs icon rounded-circle">
                 <div class="text">
                     <span class="date text-muted float-md-right">24.04.2020 </span>  
                     <h6 class="mb-1">Mike John </h6>
