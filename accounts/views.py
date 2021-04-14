@@ -4,6 +4,8 @@ from .models import Account
 from django.contrib import messages, auth
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from cart.models import Cart, CartItem
+from cart.views import _cart_id
 
 # Verification email
 from django.contrib.sites.shortcuts import get_current_site
