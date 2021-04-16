@@ -9,11 +9,8 @@
 
 <!-- ============================ COMPONENT 1 ================================= -->
 {% if not cart_items %}
-	<h2 class="text-center">Your Shopping Cart is Empty</h2>
-	<br>
-	<div class="text-center">
+	<h2 class="my-2">No Items in the Shopping Cart.</h2>
 		<a href="{% url 'store' %}" class="btn btn-primary">Continue Shopping</a>
-	</div>
 {% else %}
 <div class="row">
 	<aside class="col-lg-9">
@@ -74,7 +71,7 @@
 		</div> <!-- price-wrap .// -->
 	</td>
 	<td class="text-right">
-	<a href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}" onclick="return confirm('Are you sure you want to delete this item?')" class="btn btn-danger"> Remove</a>
+	<a href="{% url 'remove_cart_item' cart_item.product.id cart_item.id %}" class="btn btn-danger"> Remove</a>
 	</td>
 </tr>
 {% endfor %}
