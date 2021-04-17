@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Product, ReviewRating
+from .models import Product, ReviewRating, ProductGallery
 from category.models import Category
 from cart.views import _cart_id
 from cart.models import Cart, CartItem
@@ -8,6 +8,7 @@ from django.db.models import Q
 from .forms import ReviewForm
 from django.contrib import messages
 from orders.models import OrderProduct
+from django.contrib.auth.decorators import login_required
 
 def store(request, category_slug=None):
 
@@ -53,12 +54,15 @@ def product_detail(request, category_slug, product_slug):
 
     reviews = ReviewRating.objects.filter(product_id=single_product.id, status=True)
 
+    product_gallery = ProductGallery.objects.filter(product_id=single_product.id)
+
 
     context = {
         'single_product': single_product,
         'in_cart': in_cart,
         'order_product': order_product,
         'reviews': reviews,
+        'product_gallery': product_gallery,
     }
 
     return render(request, 'app/product_detail.html', context=context)
@@ -77,6 +81,7 @@ def search(request):
 
     return render(request, 'app/store.html', context=context)
 
+@login_required(login_url='login')
 def submit_review(request, product_id):
     url = request.META.get('HTTP_REFERER')
     if request.method == "POST":

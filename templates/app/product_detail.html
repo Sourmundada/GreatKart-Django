@@ -10,6 +10,8 @@
 
 <section class="section-content padding-y bg">
     <div class="container">
+
+        {% include 'alerts.html' %}
     
     <!-- ============================ COMPONENT 1 ================================= -->
     <div class="card">
@@ -17,9 +19,17 @@
           <aside class="col-md-6">
 
     <article class="gallery-wrap"> 
-        <div class="img-big-wrap">
+        <div class="img-big-wrap mainImage">
            <a href="#"><img src="{{ single_product.image.url }}"></a>
         </div> <!-- img-big-wrap.// -->
+        <ul class="thumb">
+            <li>
+                <a href="{{ single_product.image.url }}" target="mainImage"><img src="{{ single_product.image.url }}" alt="Product Image"></a>
+                {% for i in product_gallery %}
+                <a href="{{i.image.url}}" target="mainImage"><img src="{{i.image.url}}" alt="Product Image"></a>
+                {% endfor %}
+            </li>
+        </ul>
         
     </article> <!-- gallery-wrap .end// -->
             </aside>
@@ -92,12 +102,10 @@
     
     <div class="row">
                 <div class="col-md-9">
-                    {% include 'alerts.html' %}
 
         <form action="{% url 'submit_review' single_product.id %}" class="my-2" method="POST">
             {% csrf_token %}
-            <h5>Write Your Review</h5>
-            {{ single_product.averageReview }}
+            <h3>Write Your Review</h3>
 
             <div class="my-3">
                 <!-- Rating stars -->
@@ -138,7 +146,7 @@
         </form>
     <br>
             <h3>Customer Reviews </h3>  
-            <div class="rating-star mb-3">
+            <div class="rating-star">
                 <span>
                     <i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview >= 0.5 and single_product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
                     <i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview >= 1.5 and single_product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
@@ -150,10 +158,11 @@
                 </span>
                 </span>
             </div>
-        <article class="box mb-3">
+            <br>
             {% for review in reviews %}
+        <article class="box mb-3">
             <div class="icontext w-100">
-                <img src="{% static '/images/avatars/avatar1.jpg' %}" class="img-xs icon rounded-circle">
+                <!-- <img src="{{ requ }}" class="img-xs icon rounded-circle"> -->
                 <div class="text">
                     <span class="date text-muted float-md-right">{{ review.updated_at }} </span>  
                     <h6 class="mb-1">{{ review.user.full_name }} </h6>
@@ -176,8 +185,8 @@
                     {{ review.review }}
                 </p>	
             </div>
-            {% endfor %}
         </article>
+            {% endfor %}
     
         
     

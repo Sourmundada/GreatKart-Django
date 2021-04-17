@@ -5,7 +5,8 @@ from django.urls import path, include
 from .views import home
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path('myboss_account/', admin.site.urls),
     path('', home, name='home'),
     path('store/', include('store.urls')),
     path('cart/', include('cart.urls')),
